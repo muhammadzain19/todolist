@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <style>
+
+    </style>
+    <title>To Do List</title>
+</head>
+
+<body>
+    <div class="parent" style="background-color: #a24ced;">
+        <div class="inputbuttonparent">
+            <div class="inputbutton">
+                <div>
+                    <input id="inputText" class="inputbox" type="text" placeholder="What will you do today?"><button
+                        id="addButton" class="addbutton">ADD</button>
+                </div>
+            </div>
+            <div id="output"></div>
+        </div>
+    </div>
+    <script>
+        // Get references to the input, button, and output elements
+        const inputText = document.getElementById('inputText');
+        const addButton = document.getElementById('addButton');
+        const output = document.getElementById('output');
+
+        // Event listener for the "Add" button click
+        addButton.addEventListener('click', function () {
+            // Get the text from the input field
+            const text = inputText.value.trim();
+
+            // Check if the input is not empty
+            if (text !== '') {
+                // Create a new div element to display the text
+                const newBox = document.createElement('div');
+                newBox.className = 'added-box'; // Apply the box styling
+
+                // Create a span element to contain the text within the box
+                const textBox = document.createElement('span');
+                textBox.textContent = text;
+                textBox.className = 'box-text'; // Apply styling to the text
+
+                // Create a button container for the edit and delete buttons
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+
+                // Create an edit button
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.className = 'edit-button'; // Apply styling to the edit button
+
+                // Create a text input for editing
+                const editInput = document.createElement('input');
+                editInput.type = 'text';
+                editInput.className = 'edit-input'; // Apply styling to the edit input
+                editInput.style.display = 'none'; // Initially hide the edit input
+
+                // Event listener to toggle between displaying text and the edit input
+                editButton.addEventListener('click', function () {
+                    if (textBox.style.display !== 'none') {
+                        textBox.style.display = 'none';
+                        editInput.style.display = 'block';
+                        editInput.value = text;
+                    } else {
+                        const newText = editInput.value.trim();
+                        if (newText !== '') {
+                            textBox.textContent = newText;
+                        }
+                        textBox.style.display = 'inline-block';
+                        editInput.style.display = 'none';
+                        text = newText; // Update the text with the latest input
+                    }
+                });
+
+                // Create a delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete-button'; // Apply styling to the delete button
+
+                // Event listener to delete the box when the "Delete" button is clicked
+                deleteButton.addEventListener('click', function () {
+                    output.removeChild(newBox);
+                });
+
+                // Append the edit and delete buttons to the button container
+                buttonContainer.appendChild(editButton);
+                buttonContainer.appendChild(deleteButton);
+
+                // Append the text span, edit input, and button container to the new div
+                newBox.appendChild(textBox);
+                newBox.appendChild(editInput);
+                newBox.appendChild(buttonContainer);
+
+                // Insert the new div at the beginning of the output container
+                output.insertBefore(newBox, output.firstChild);
+
+                // Clear the input field for the next input
+                inputText.value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>
+
